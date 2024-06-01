@@ -37,3 +37,5 @@ Query AS numbers from a file:
 ```bash
 ./asn2cidr.sh -l asn.txt -o output.txt
 ```
+## Reference
+https://apexvicky.medium.com/bug-bounty-methodology-horizontal-enumeration-89f7cd172e6e
