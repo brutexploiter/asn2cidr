@@ -74,17 +74,21 @@ if [ -z "$INPUT_TYPE" ]; then
     exit 1
 fi
 
-# Validate output file
-if [ -n "$OUTPUT_FILE" ] && [ -e "$OUTPUT_FILE" ]; then
-    echo "Output file '$OUTPUT_FILE' already exists. Please specify a different name." 1>&2
-    exit 1
-fi
-
 # Query AS numbers
 if [ "$INPUT_TYPE" == "file" ]; then
-    query_from_file "$INPUT_FILE" > "$OUTPUT_FILE"
+    if [ -z "$OUTPUT_FILE" ]; then
+        query_from_file "$INPUT_FILE"
+    else
+        query_from_file "$INPUT_FILE" | tee "$OUTPUT_FILE"
+    fi
 elif [ "$INPUT_TYPE" == "as_numbers" ]; then
-    for AS in "${AS_NUMBERS[@]}"; do
-        whois -h whois.radb.net -- "-i origin $AS" | grep -Eo "([0-9.]+){4}/[0-9]+" | uniq
-    done > "$OUTPUT_FILE"
+    if [ -z "$OUTPUT_FILE" ]; then
+        for AS in "${AS_NUMBERS[@]}"; do
+            whois -h whois.radb.net -- "-i origin $AS" | grep -Eo "([0-9.]+){4}/[0-9]+" | uniq
+        done
+    else
+        for AS in "${AS_NUMBERS[@]}"; do
+            whois -h whois.radb.net -- "-i origin $AS" | grep -Eo "([0-9.]+){4}/[0-9]+" | uniq
+        done | tee "$OUTPUT_FILE"
+    fi
 fi
