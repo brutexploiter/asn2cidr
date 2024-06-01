@@ -5,7 +5,7 @@ asn2cidr is a bash script that utilizes WHOIS queries to extract CIDR ranges ass
 Clone the repository:
 
 ```bash
-git clone https://github.com/your-username/asn2cidr.git
+git clone https://github.com/brutexploiter/asn2cidr.git
 ```
 Change into the asn2cidr directory:
 
